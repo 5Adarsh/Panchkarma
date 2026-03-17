@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+<%- include("../partials/navbar_manager.ejs") %>
+<div class="manager-dashboard">
+  <h1>Manager Dashboard</h1>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-number"><%= stats.totalUsers %></div>
+      <div class="stat-label">Total Users</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-number"><%= stats.totalAppointments %></div>
+      <div class="stat-label">Total Appointments</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-number"><%= stats.totalTherapies %></div>
+      <div class="stat-label">Available Therapies</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-number"><%= stats.completedAppointments %></div>
+      <div class="stat-label">Completed Sessions</div>
+    </div>
+  </div>
+
+  <div class="management-links">
+    <a href="/manager/users" class="btn btn-primary">Manage Users</a>
+    <a href="/manager/therapies" class="btn btn-primary">Manage Therapies</a>
+    <a href="/manager/appointments" class="btn btn-primary">View Appointments</a>
+    <a href="/manager/reports" class="btn btn-primary">View Reports</a>
+  </div>
+</div>
+<%- include("../partials/footer.ejs") %>
+</body>
+</html>

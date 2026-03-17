@@ -1,0 +1,29 @@
+<header class="navbar navbar-manager">
+  <div class="navbar-container">
+
+    <!-- LOGO -->
+    <div class="navbar-brand">
+      <a href="/manager/dashboard" class="logo">🌸 Panchkarma Clinic - Manager</a>
+    </div>
+
+    <!-- HAMBURGER MENU (RIGHT SIDE) -->
+    <button class="menu-toggle" onclick="toggleManagerMenu()">☰</button>
+
+    <!-- DROPDOWN MENU -->
+    <nav class="navbar-menu" id="managerMenu">
+      <a href="/manager/dashboard" class="nav-link">Dashboard</a>
+      <a href="/manager/users" class="nav-link">Users</a>
+      <a href="/manager/therapies" class="nav-link">Therapies</a>
+      <a href="/manager/appointments" class="nav-link">Appointments</a>
+      <a href="/manager/reports" class="nav-link">Reports</a>
+      <a href="/auth/logout" class="nav-link logout-link">Logout</a>
+    </nav>
+
+  </div>
+</header>
+
+<script>
+  function toggleManagerMenu() {
+    document.getElementById("managerMenu").classList.toggle("open");
+  }
+</script>

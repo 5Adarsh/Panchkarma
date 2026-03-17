@@ -1,0 +1,31 @@
+<header class="navbar navbar-client">
+  <div class="navbar-container">
+
+    <!-- LEFT: LOGO -->
+    <div class="navbar-brand">
+      <a href="/client/dashboard" class="logo">🌸 Panchkarma Clinic</a>
+    </div>
+
+    <!-- RIGHT: USER + HAMBURGER MENU -->
+    <div class="navbar-right">
+      <span class="user-greeting">Hi, <%= user.firstName %></span>
+
+      <button class="nav-dropdown-toggle" onclick="toggleClientMenu()">
+        ☰
+      </button>
+
+      <div class="nav-dropdown" id="client-nav-dropdown">
+        <a href="/client/dashboard" class="nav-link">Dashboard</a>
+        <a href="/client/appointments" class="nav-link">Appointments</a>
+        <a href="/client/book-therapy" class="nav-link">Book Therapy</a>
+        <a href="/client/dosha-tracker" class="nav-link">Dosha Tracker</a>
+        <a href="/client/profile" class="nav-link">Profile</a>
+
+        <div class="dropdown-divider"></div>
+
+        <a href="/auth/logout" class="nav-link logout-link">Logout</a>
+      </div>
+    </div>
+
+  </div>
+</header>

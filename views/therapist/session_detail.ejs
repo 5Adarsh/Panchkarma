@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title || "Session Details" %></title>
+  <link rel="stylesheet" href="/css/main.css" />
+</head>
+
+<body>
+
+  <%- include("../partials/navbar_therapist.ejs") %>
+
+  <div class="page-container">
+
+    <h1>Session Details</h1>
+
+    <!-- ==========================
+         CLIENT INFO (TABLE)
+    =========================== -->
+    <section class="section-block">
+      <h2>Client</h2>
+
+      <table class="table">
+        <tbody>
+          <tr>
+            <th style="width: 160px;">Name</th>
+            <td><%= session.client.firstName %> <%= session.client.lastName %></td>
+          </tr>
+          <tr>
+            <th>Email</th>
+            <td><%= session.client.email %></td>
+          </tr>
+          <tr>
+            <th>Phone</th>
+            <td><%= session.client.phone %></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ==========================
+         THERAPY DETAILS (TABLE)
+    =========================== -->
+    <section class="section-block">
+      <h2>Therapy</h2>
+
+      <table class="table">
+        <tbody>
+          <tr>
+            <th style="width: 160px;">Therapy</th>
+            <td><%= session.therapy.name %></td>
+          </tr>
+
+          <% if (session.therapy.description) { %>
+            <tr>
+              <th>Description</th>
+              <td><%= session.therapy.description %></td>
+            </tr>
+          <% } %>
+
+          <tr>
+            <th>Date</th>
+            <td><%= new Date(session.appointmentDate).toLocaleDateString() %></td>
+          </tr>
+
+          <tr>
+            <th>Time</th>
+            <td><%= session.startTime %></td>
+          </tr>
+
+          <tr>
+            <th>Status</th>
+            <td>
+              <span class="badge badge-<%= session.status === 'COMPLETED' ? 'success' : 'info' %>">
+                <%= session.status %>
+              </span>
+            </td>
+          </tr>
+
+          <% if (session.doctor) { %>
+            <tr>
+              <th>Referring Doctor</th>
+              <td>
+                Dr. <%= session.doctor.firstName %> <%= session.doctor.lastName %>
+              </td>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ==========================
+         COMPLETE SESSION
+    =========================== -->
+    <section class="section-block">
+      <h2>Complete Session</h2>
+
+      <% if (session.status === "COMPLETED") { %>
+
+        <p>This session is already marked as completed.</p>
+
+      <% } else { %>
+
+        <form
+          method="POST"
+          action="/therapist/session/<%= session._id %>/complete"
+          class="form-card"
+        >
+
+          <div class="form-group">
+            <label for="notes">Session Notes (optional)</label>
+            <textarea
+              id="notes"
+              name="notes"
+              rows="4"
+              class="form-input"
+              placeholder="Describe therapy given, client response, recommendations, etc."
+            ></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary">
+            Mark as Completed
+          </button>
+
+        </form>
+
+      <% } %>
+
+      <div class="action-links">
+        <a href="/therapist/today-sessions" class="btn btn-secondary">
+          Back to Today's Sessions
+        </a>
+      </div>
+
+    </section>
+
+  </div>
+
+  <%- include("../partials/footer.ejs") %>
+
+</body>
+
+</html>

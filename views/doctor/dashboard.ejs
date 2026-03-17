@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Dashboard</title>
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+
+<body>
+<%- include("../partials/navbar_doctor.ejs") %>
+
+<div class="doctor-dashboard">
+  <h1>Doctor Dashboard</h1>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-number"><%= patientsCount %></div>
+      <div class="stat-label">Total Patients</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-number"><%= appointmentsToday.length %></div>
+      <div class="stat-label">Today's Appointments</div>
+    </div>
+  </div>
+
+  <!-- ============================================
+        TODAY'S APPOINTMENTS (TABLE)
+  ============================================= -->
+  <div class="appointments-section">
+    <h2>Today's Appointments</h2>
+
+    <% if (appointmentsToday.length > 0) { %>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Patient</th>
+            <th>Therapy</th>
+            <th>Time</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% appointmentsToday.forEach(apt => { %>
+            <tr>
+              <td><%= apt.client.firstName %> <%= apt.client.lastName %></td>
+              <td><%= apt.therapy ? apt.therapy.name : "Not Assigned yet" %></td>
+              <td><%= apt.startTime %></td>
+              <td>
+                <span class="badge <%= apt.status.toLowerCase() %>">
+                  <%= apt.status %>
+                </span>
+              </td>
+              <td>
+                <a href="/doctor/appointments" class="btn btn-small">View</a>
+              </td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+
+    <% } else { %>
+      <p>No appointments scheduled for today.</p>
+    <% } %>
+  </div>
+
+  <!-- ============================================
+        UPCOMING APPOINTMENTS (NOW TABLE FORMAT)
+  ============================================= -->
+  <div class="upcoming-section">
+    <h2>Upcoming Appointments</h2>
+
+    <% if (upcomingAppointments.length > 0) { %>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Patient</th>
+            <th>Therapy</th>
+            <th>Date</th>
+            <th>Time</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% upcomingAppointments.forEach(apt => { %>
+            <tr>
+              <td><%= apt.client.firstName %> <%= apt.client.lastName %></td>              
+              <td><%= apt.therapy ? apt.therapy.name : "Not Assigned yet" %></td>
+              <td><%= new Date(apt.appointmentDate).toLocaleDateString() %></td>
+              <td><%= apt.startTime %></td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+
+    <% } else { %>
+      <p>No upcoming appointments.</p>
+    <% } %>
+  </div>
+
+  <!-- ACTION BUTTONS -->
+  <div class="actions">
+    <a href="/doctor/appointments" class="btn btn-primary">View All Appointments</a>
+    <a href="/doctor/patients" class="btn btn-secondary">My Patients</a>
+  </div>
+
+</div>
+
+<%- include("../partials/footer.ejs") %>
+
+</body>
+</html>

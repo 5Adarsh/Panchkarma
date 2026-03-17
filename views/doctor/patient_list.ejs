@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor | Patients</title>
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+
+<body>
+
+    <!-- Doctor Navbar Include -->
+    <%- include("../partials/navbar_doctor.ejs") %>
+
+    <div class="page-container">
+
+        <h1 class="page-title">My Patients</h1>
+
+        <% if (patients && patients.length > 0) { %>
+
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Last Appointment</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <% patients.forEach(patient => { %>
+                    <tr>
+                        <td><%= patient.firstName %> <%= patient.lastName %></td>
+                        <td><%= patient.email %></td>
+                        <td><%= patient.phone %></td>
+
+                        <td>
+                            <% if (patient.lastAppointment) { %>
+                                <%= new Date(patient.lastAppointment).toLocaleDateString() %>
+                            <% } else { %>
+                                <span class="no-data">No recent visit</span>
+                            <% } %>
+                        </td>
+
+                        <td>
+                            <a href="/doctor/patient/<%= patient._id %>" class="btn btn-small">
+                                View Details
+                            </a>
+                        </td>
+                    </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+
+        <% } else { %>
+
+        <div class="empty-state">
+            <p>No patients assigned to you.</p>
+        </div>
+
+        <% } %>
+
+    </div>
+<%- include("../partials/footer.ejs") %>
+</body>
+</html>

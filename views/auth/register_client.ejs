@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register | Panchkarma Clinic</title>
+  <link rel="stylesheet" href="/css/main.css" />
+</head>
+
+<body>
+  <div class="auth-container">
+    <div class="auth-card">
+      <h1 class="auth-title">Create Account</h1>
+      <p class="auth-subtitle">Start your wellness journey</p>
+
+      <form method="POST" action="/auth/register" class="auth-form">
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" name="firstName" required class="form-input" />
+          </div>
+
+          <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" name="lastName" required class="form-input" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" required class="form-input" />
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" name="phone" required class="form-input" />
+        </div>
+
+        <!-- ⭐ NEW: Role Select -->
+        <div class="form-group">
+          <label for="role">Select Role</label>
+          <select id="role" name="role" required class="form-input">
+            <option value="">-- Choose Role --</option>
+            <option value="CLIENT">Client</option>
+            <option value="DOCTOR">Doctor</option>
+            <option value="THERAPIST">Therapist</option>
+            <option value="MANAGER">Manager</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required class="form-input" />
+        </div>
+
+        <div class="form-group">
+          <label for="passwordConfirm">Confirm Password</label>
+          <input type="password" id="passwordConfirm" name="passwordConfirm" required class="form-input" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Register</button>
+      </form>
+
+      <p class="auth-footer">
+        Already have an account? <a href="/auth/login">Login here</a>
+      </p>
+    </div>
+  </div>
+
+  <script src="/js/common.js"></script>
+</body>
+
+</html>

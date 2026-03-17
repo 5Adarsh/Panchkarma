@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+<%- include("../partials/navbar_doctor.ejs") %>
+<div class="doctor-appointments">
+  <h1>Appointments</h1>
+
+  <div class="filter-section">
+    <label for="status-filter">Filter by Status:</label>
+    <select id="status-filter" onchange="filterAppointments(this.value)" class="form-input">
+      <option value="ALL" <%= currentStatus === 'ALL' ? 'selected' : '' %>>All</option>
+      <option value="SCHEDULED" <%= currentStatus === 'SCHEDULED' ? 'selected' : '' %>>Scheduled</option>
+      <option value="CONFIRMED" <%= currentStatus === 'CONFIRMED' ? 'selected' : '' %>>Confirmed</option>
+      <option value="IN_PROGRESS" <%= currentStatus === 'IN_PROGRESS' ? 'selected' : '' %>>In Progress</option>
+      <option value="COMPLETED" <%= currentStatus === 'COMPLETED' ? 'selected' : '' %>>Completed</option>
+    </select>
+  </div>
+
+  <div class="appointments-list">
+    <% if (appointments.length > 0) { %>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Patient</th>
+            <th>Therapy</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% appointments.forEach(apt => { %>
+            <tr>
+              <td><%= apt.client.firstName %> <%= apt.client.lastName %></td>
+              <td><%= apt.therapy ? apt.therapy.name : "Not Assigned yet" %></td>
+              <td><%= new Date(apt.appointmentDate).toLocaleDateString() %></td>
+              <td><%= apt.startTime %></td>
+              <td><span class="badge"><%= apt.status %></span></td>
+              <td>
+                <% if (apt.status === 'SCHEDULED') { %>
+                  <form method="POST" action="/doctor/appointments/<%= apt._id %>/confirm" style="display: inline;">
+                    <button type="submit" class="btn btn-small btn-success">Confirm</button>
+                  </form>
+                <% } %>
+                <% if (apt.status === 'CONFIRMED') { %>
+                  <form method="POST" action="/doctor/appointments/<%= apt._id %>/complete" style="display: inline;">
+                    <textarea name="notes" placeholder="Notes..." rows="1" style="display: none;"></textarea>
+                    <button type="submit" class="btn btn-small btn-success">Complete</button>
+                  </form>
+                <% } %>
+              </td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    <% } else { %>
+      <p>No appointments found.</p>
+    <% } %>
+  </div>
+</div>
+<%- include("../partials/footer.ejs") %>
+</body>
+</html>

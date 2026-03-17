@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title || "All Appointments" %></title>
+  <link rel="stylesheet" href="/css/main.css" />
+</head>
+<body>
+
+  <%- include("../partials/navbar_manager.ejs") %>
+
+  <div class="page-container">
+    <h1>All Appointments</h1>
+
+    <form method="GET" action="/manager/appointments" class="filter-form">
+      <label for="status">Filter by status:</label>
+      <select id="status" name="status" class="form-input" onchange="this.form.submit()">
+        <option value="ALL" <%= currentStatus === 'ALL' ? 'selected' : '' %>>All</option>
+        <option value="SCHEDULED" <%= currentStatus === 'SCHEDULED' ? 'selected' : '' %>>Scheduled</option>
+        <option value="CONFIRMED" <%= currentStatus === 'CONFIRMED' ? 'selected' : '' %>>Confirmed</option>
+        <option value="COMPLETED" <%= currentStatus === 'COMPLETED' ? 'selected' : '' %>>Completed</option>
+        <option value="CANCELLED" <%= currentStatus === 'CANCELLED' ? 'selected' : '' %>>Cancelled</option>
+      </select>
+    </form>
+
+    <% if (!appointments || appointments.length === 0) { %>
+      <p>No appointments found.</p>
+    <% } else { %>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Client</th>
+            <th>Therapy</th>
+            <th>Doctor</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% appointments.forEach(a => { %>
+            <tr>
+              <td><%= a.client ? (a.client.firstName + ' ' + a.client.lastName) : 'N/A' %></td>
+              <td><%= a.therapy ? a.therapy.name : 'N/A' %></td>
+              <td>
+                <% if (a.doctor) { %>
+                  Dr. <%= a.doctor.firstName %> <%= a.doctor.lastName %>
+                <% } else { %>
+                  -
+                <% } %>
+              </td>
+              <td><%= new Date(a.appointmentDate).toLocaleDateString() %></td>
+              <td><%= a.startTime %></td>
+              <td>
+                <span class="badge badge-<%= a.status === 'COMPLETED' ? 'success' :
+                                            a.status === 'CANCELLED' ? 'danger' : 'info' %>">
+                  <%= a.status %>
+                </span>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    <% } %>
+  </div>
+<%- include("../partials/footer.ejs") %>
+
+</body>
+</html>

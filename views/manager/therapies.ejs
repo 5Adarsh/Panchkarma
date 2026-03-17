@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title || "Manage Therapies" %></title>
+  <link rel="stylesheet" href="/css/main.css" />
+</head>
+
+<body>
+
+  <%- include("../partials/navbar_manager.ejs") %>
+
+  <div class="page-container">
+
+    <h1>Manage Therapies</h1>
+
+    <!-- ==========================
+         CREATE NEW THERAPY
+    =========================== -->
+    <section class="section-block">
+      <h2>Create New Therapy</h2>
+
+      <form method="POST" action="/manager/therapies" class="form-card">
+
+        <div class="form-group">
+          <label for="name">Therapy Name</label>
+          <input id="name" name="name" type="text" class="form-input" required />
+        </div>
+
+        <div class="form-group">
+          <label for="description">Description</label>
+          <textarea id="description" name="description" rows="3" class="form-input"></textarea>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="duration">Duration (minutes)</label>
+            <input id="duration" name="duration" type="number" class="form-input" required />
+          </div>
+
+          <div class="form-group">
+            <label for="price">Price (₹)</label>
+            <input id="price" name="price" type="number" step="0.01" class="form-input" required />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="benefits">Benefits (comma-separated)</label>
+          <input id="benefits" name="benefits" type="text" class="form-input"
+            placeholder="e.g., Stress relief, Detoxification" />
+        </div>
+
+        <div class="form-group">
+          <label for="doshas">Target Doshas (comma-separated)</label>
+          <input id="doshas" name="doshas" type="text" class="form-input"
+            placeholder="e.g., Vata, Pitta" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Create Therapy</button>
+
+      </form>
+    </section>
+
+    <!-- ==========================
+         EXISTING THERAPIES
+    =========================== -->
+    <section class="section-block">
+      <h2>Existing Therapies</h2>
+
+      <% if (!therapies || therapies.length === 0) { %>
+
+        <p>No therapies found.</p>
+
+      <% } else { %>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Duration</th>
+            <th>Price</th>
+            <th>Benefits</th>
+            <th>Doshas</th>
+            <th>Active</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% therapies.forEach(t => { %>
+          <tr>
+            <td><%= t.name %></td>
+            <td><%= t.duration %> min</td>
+            <td>₹ <%= t.price.toFixed ? t.price.toFixed(2) : t.price %></td>
+
+            <td><%= t.benefits?.length ? t.benefits.join(", ") : "-" %></td>
+            <td><%= t.doshas?.length ? t.doshas.join(", ") : "-" %></td>
+
+            <td><%= t.isActive ? "Yes" : "No" %></td>
+
+            <td style="display:flex; gap:10px;">
+
+              <!-- Toggle active -->
+              <form method="POST"
+                    action="/manager/therapies/<%= t._id %>?_method=PUT"
+                    class="inline-form">
+
+                <input type="hidden" name="name" value="<%= t.name %>" />
+                <input type="hidden" name="description" value="<%= t.description %>" />
+                <input type="hidden" name="duration" value="<%= t.duration %>" />
+                <input type="hidden" name="price" value="<%= t.price %>" />
+                <input type="hidden" name="benefits" value="<%= (t.benefits || []).join(',') %>" />
+                <input type="hidden" name="doshas" value="<%= (t.doshas || []).join(',') %>" />
+                <input type="hidden" name="isActive" value="<%= t.isActive ? 'false' : 'true' %>" />
+
+                <button type="submit" class="btn btn-small">
+                  Set <%= t.isActive ? "Inactive" : "Active" %>
+                </button>
+              </form>
+
+              <!-- Delete -->
+              <form method="POST"
+                    action="/manager/therapies/<%= t._id %>?_method=DELETE"
+                    class="inline-form"
+                    onsubmit="return confirm('Delete this therapy?');">
+
+                <button type="submit" class="btn btn-small btn-danger">Delete</button>
+
+              </form>
+
+            </td>
+          </tr>
+          <% }) %>
+        </tbody>
+
+      </table>
+
+      <% } %>
+
+    </section>
+
+  </div>
+
+  <%- include("../partials/footer.ejs") %>
+
+</body>
+</html>

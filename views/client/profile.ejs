@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+<%- include("../partials/navbar_client.ejs") %>
+    <h1>My Profile</h1>
+
+    <div class="profile-container">
+        <!-- Optional success / error messages -->
+        <% if (typeof success !== 'undefined' && success) { %>
+            <div class="alert alert-success"><%= success %></div>
+        <% } %>
+        <% if (typeof error !== 'undefined' && error) { %>
+            <div class="alert alert-error"><%= error %></div>
+        <% } %>
+
+        <form method="POST" action="/client/profile" class="form-card">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="firstName">First Name</label>
+                    <input
+                        type="text"
+                        id="firstName"
+                        name="firstName"
+                        value="<%= profile.firstName || '' %>"
+                        class="form-input"
+                    />
+                </div>
+
+                <div class="form-group">
+                    <label for="lastName">Last Name</label>
+                    <input
+                        type="text"
+                        id="lastName"
+                        name="lastName"
+                        value="<%= profile.lastName || '' %>"
+                        class="form-input"
+                    />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value="<%= profile.email || '' %>"
+                    class="form-input"
+                    disabled
+                />
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone</label>
+                <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    value="<%= profile.phone || '' %>"
+                    class="form-input"
+                />
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="age">Age</label>
+                    <input
+                        type="number"
+                        id="age"
+                        name="age"
+                        value="<%= profile.age || '' %>"
+                        min="18"
+                        max="120"
+                        class="form-input"
+                    />
+                </div>
+
+                <div class="form-group">
+                    <label for="gender">Gender</label>
+                    <select id="gender" name="gender" class="form-input">
+                        <option value="">-- Select --</option>
+                        <option value="MALE" <%= profile.gender === 'MALE' ? 'selected' : '' %>>Male</option>
+                        <option value="FEMALE" <%= profile.gender === 'FEMALE' ? 'selected' : '' %>>Female</option>
+                        <option value="OTHER" <%= profile.gender === 'OTHER' ? 'selected' : '' %>>Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="bloodGroup">Blood Group</label>
+                    <select id="bloodGroup" name="bloodGroup" class="form-input">
+                        <option value="">-- Select --</option>
+                        <option value="A+" <%= profile.bloodGroup === 'A+' ? 'selected' : '' %>>A+</option>
+                        <option value="A-" <%= profile.bloodGroup === 'A-' ? 'selected' : '' %>>A-</option>
+                        <option value="B+" <%= profile.bloodGroup === 'B+' ? 'selected' : '' %>>B+</option>
+                        <option value="B-" <%= profile.bloodGroup === 'B-' ? 'selected' : '' %>>B-</option>
+                        <option value="AB+" <%= profile.bloodGroup === 'AB+' ? 'selected' : '' %>>AB+</option>
+                        <option value="AB-" <%= profile.bloodGroup === 'AB-' ? 'selected' : '' %>>AB-</option>
+                        <option value="O+" <%= profile.bloodGroup === 'O+' ? 'selected' : '' %>>O+</option>
+                        <option value="O-" <%= profile.bloodGroup === 'O-' ? 'selected' : '' %>>O-</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="healthConditions">Health Conditions (comma-separated)</label>
+                <textarea
+                    id="healthConditions"
+                    name="healthConditions"
+                    rows="3"
+                    class="form-input"
+                    placeholder="e.g., Hypertension, Diabetes"
+                ><%= profile.healthConditions ? profile.healthConditions.join(', ') : '' %></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="allergies">Allergies (comma-separated)</label>
+                <textarea
+                    id="allergies"
+                    name="allergies"
+                    rows="3"
+                    class="form-input"
+                    placeholder="e.g., Penicillin, Shellfish"
+                ><%= profile.allergies ? profile.allergies.join(', ') : '' %></textarea>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+                <a href="/client/dashboard" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+<%- include("../partials/footer.ejs") %>
+</body>
+</html>

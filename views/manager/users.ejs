@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>
+    <%= title || "Manage Users" %>
+  </title>
+  <link rel="stylesheet" href="/css/main.css" />
+</head>
+
+<body>
+
+  <%- include("../partials/navbar_manager.ejs") %>
+
+    <div class="page-container">
+
+      <h1>Manage Users</h1>
+
+      <!-- Notification -->
+      <% if (typeof message !=="undefined" && message) { %>
+        <p class="error-text">
+          <%= message %>
+        </p>
+        <% } %>
+
+          <!-- =================================================
+         CREATE NEW USER
+    ================================================== -->
+          <section class="section-block">
+            <h2>Create New User</h2>
+
+            <form method="POST" action="/manager/users" class="form-card">
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="firstName">First Name</label>
+                  <input id="firstName" name="firstName" type="text" class="form-input" required />
+                </div>
+
+                <div class="form-group">
+                  <label for="lastName">Last Name</label>
+                  <input id="lastName" name="lastName" type="text" class="form-input" required />
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="email">Email</label>
+                  <input id="email" name="email" type="email" class="form-input" required />
+                </div>
+
+                <div class="form-group">
+                  <label for="phone">Phone</label>
+                  <input id="phone" name="phone" type="tel" class="form-input" />
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="role">Role</label>
+                  <select id="role" name="role" class="form-input" required>
+                    <option value="CLIENT">Client</option>
+                    <option value="DOCTOR">Doctor</option>
+                    <option value="THERAPIST">Therapist</option>
+                    <option value="MANAGER">Manager</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="password">Temp Password</label>
+                  <input id="password" name="password" type="text" class="form-input" required />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="specialization">Specialization (for Doctor/Therapist)</label>
+                <input id="specialization" name="specialization" type="text" class="form-input"
+                  placeholder="e.g., Panchakarma, Massage Therapy" />
+              </div>
+
+              <button type="submit" class="btn btn-primary">Create User</button>
+            </form>
+          </section>
+
+          <!-- =================================================
+         LIST OF USERS
+    ================================================== -->
+          <section class="section-block">
+            <h2>All Users</h2>
+
+            <!-- Filter -->
+            <form method="GET" action="/manager/users" class="filter-form">
+              <label for="roleFilter">Filter by role:</label>
+
+              <select id="roleFilter" name="role" class="form-input" onchange="this.form.submit()">
+
+                <option value="ALL" <%=currentRole==="ALL" ? "selected" : "" %>>All</option>
+                <option value="CLIENT" <%=currentRole==="CLIENT" ? "selected" : "" %>>Client</option>
+                <option value="DOCTOR" <%=currentRole==="DOCTOR" ? "selected" : "" %>>Doctor</option>
+                <option value="THERAPIST" <%=currentRole==="THERAPIST" ? "selected" : "" %>>Therapist</option>
+                <option value="MANAGER" <%=currentRole==="MANAGER" ? "selected" : "" %>>Manager</option>
+              </select>
+            </form>
+
+            <% if (!users || users.length===0) { %>
+
+              <p>No users found.</p>
+
+              <% } else { %>
+
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Phone</th>
+                      <th>Role</th>
+                      <th>Active</th>
+                      <th>Specialization</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    <% users.forEach(u=> { %>
+                      <tr>
+                        <td>
+                          <%= u.firstName %>
+                            <%= u.lastName %>
+                        </td>
+                        <td>
+                          <%= u.email %>
+                        </td>
+                        <td>
+                          <%= u.phone || "-" %>
+                        </td>
+                        <td>
+                          <%= u.role %>
+                        </td>
+                        <td>
+                          <%= u.isActive ? "Yes" : "No" %>
+                        </td>
+                        <td>
+                          <%= u.specialization || "-" %>
+                        </td>
+
+                        <td class="action-cell">
+                          <form method="POST" action="/manager/users/<%= u._id %>?_method=PUT" class="inline-form">
+                            <button type="submit" class="btn btn-small">Quick Update</button>
+                          </form>
+
+                          <form method="POST" action="/manager/users/<%= u._id %>?_method=DELETE" class="inline-form"
+                            onsubmit="return confirm('Delete this user?');">
+                            <button type="submit" class="btn btn-small btn-danger">Delete</button>
+                          </form>
+                        </td>
+                      </tr>
+                      <% }) %>
+                  </tbody>
+
+                </table>
+
+                <% } %>
+          </section>
+
+    </div>
+
+    <%- include("../partials/footer.ejs") %>
+
+</body>
+
+</html>

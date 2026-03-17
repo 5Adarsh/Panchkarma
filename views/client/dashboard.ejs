@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+<%- include("../partials/navbar_client.ejs") %>
+
+<div class="dashboard-container">
+  <h1>Dashboard</h1>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-number"><%= appointmentCount %></div>
+      <div class="stat-label">Completed Sessions</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-number"><%= upcomingCount %></div>
+      <div class="stat-label">Upcoming Appointments</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-number"><%= recentAppointments.length %></div>
+      <div class="stat-label">Total Appointments</div>
+    </div>
+  </div>
+
+  <% if (nextAppointment) { %>
+    <div class="next-appointment-card">
+      <h2>Your Next Appointment</h2>
+      <div class="appointment-details">
+        <p><strong>Therapy:</strong> <%= nextAppointment.therapy ? nextAppointment.therapy.name : "Basti" %></p>
+        <p><strong>Date:</strong> <%= new Date(nextAppointment.appointmentDate).toLocaleDateString() %></p>
+        <p><strong>Time:</strong> <%= nextAppointment.startTime %></p>
+        <p><strong>Doctor:</strong> Dr. <%= nextAppointment.doctor.firstName %></p>
+        <p><strong>Status:</strong> <span class="badge badge-info"><%= nextAppointment.status %></span></p>
+      </div>
+    </div>
+  <% } %>
+
+  <% if (doshaStatus) { %>
+    <div class="dosha-section">
+      <h2>Dosha Balance</h2>
+      <div class="dosha-cards">
+        <div class="dosha-card vata">
+          <div class="dosha-name">Vata</div>
+          <div class="dosha-percentage"><%= doshaStatus.vata %>%</div>
+          <div class="progress-bar"><div class="progress vata-progress"></div></div>
+        </div>
+
+        <div class="dosha-card pitta">
+          <div class="dosha-name">Pitta</div>
+          <div class="dosha-percentage"><%= doshaStatus.pitta %>%</div>
+          <div class="progress-bar"><div class="progress pitta-progress"></div></div>
+        </div>
+
+        <div class="dosha-card kapha">
+          <div class="dosha-name">Kapha</div>
+          <div class="dosha-percentage"><%= doshaStatus.kapha %>%</div>
+          <div class="progress-bar"><div class="progress kapha-progress"></div></div>
+        </div>
+      </div>
+    </div>
+  <% } %>
+
+  <div class="recent-appointments">
+    <h2>Recent Activities</h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Therapy</th>
+          <th>Date</th>
+          <th>Doctor</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% recentAppointments.forEach(apt => { %>
+          <tr>
+            <td><%= apt.therapy ? apt.therapy.name : "Basti" %></td>
+            <td><%= new Date(apt.appointmentDate).toLocaleDateString() %></td>
+            <td>Dr. <%= apt.doctor.firstName && apt.doctor.firstName !== "" ? apt.doctor.firstName : "Vaibhav" %></td>
+            <td><span class="badge badge-<%= apt.status === 'COMPLETED' ? 'success' : 'info' %>"><%= apt.status %></span></td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="action-links">
+    <a href="/client/book-therapy" class="btn btn-primary">Book New Therapy</a>
+    <a href="/client/appointments" class="btn btn-secondary">View All Appointments</a>
+  </div>
+</div>
+
+<% if (doshaStatus) { %>
+<script>
+  document.querySelector('.vata-progress').style.width = '<%= doshaStatus.vata %>%';
+  document.querySelector('.pitta-progress').style.width = '<%= doshaStatus.pitta %>%';
+  document.querySelector('.kapha-progress').style.width = '<%= doshaStatus.kapha %>%';
+</script>
+<% } %>
+<%- include("../partials/footer.ejs") %>
+</body>
+</html>

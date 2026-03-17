@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title || "Upcoming Appointments" %></title>
+  <link rel="stylesheet" href="/css/main.css" />
+</head>
+
+<body>
+
+  <%- include("../partials/navbar_therapist.ejs") %>
+
+  <div class="page-container">
+    <h1>Upcoming Appointments</h1>
+
+    <% if (!appointments || appointments.length === 0) { %>
+
+      <div class="empty-state">
+        <p>No upcoming appointments scheduled.</p>
+      </div>
+
+    <% } else { %>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Client</th>
+            <th>Therapy</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% appointments.forEach(a => { %>
+            <tr>
+              <td>
+                <% if (a.client) { %>
+                  <%= a.client.firstName %> <%= a.client.lastName %>
+                <% } else { %>
+                  —
+                <% } %>
+              </td>
+
+              <td>
+                <%= a.therapy ? a.therapy.name : "Not Assigned yet" %>
+              </td>
+
+              <td>
+                <% if (a.appointmentDate) { %>
+                  <%= new Date(a.appointmentDate).toLocaleDateString() %>
+                <% } else { %>
+                  —
+                <% } %>
+              </td>
+
+              <td><%= a.startTime || "—" %></td>
+
+              <td>
+                <span class="badge badge-info">
+                  <%= a.status || "SCHEDULED" %>
+                </span>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+
+    <% } %>
+  </div>
+
+  <%- include("../partials/footer.ejs") %>
+
+</body>
+
+</html>

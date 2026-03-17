@@ -1,0 +1,28 @@
+<header class="navbar navbar-doctor">
+  <div class="navbar-container">
+
+    <!-- LOGO -->
+    <div class="navbar-brand">
+      <a href="/doctor/dashboard" class="logo">🌸 Panchkarma Clinic - Doctor</a>
+    </div>
+
+    <!-- HAMBURGER MENU BUTTON (RIGHT SIDE) -->
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+
+    <!-- DROPDOWN MENU -->
+    <nav class="navbar-menu" id="doctorMenu">
+      <a href="/doctor/dashboard" class="nav-link">Dashboard</a>
+      <a href="/doctor/appointments" class="nav-link">Appointments</a>
+      <a href="/doctor/patients" class="nav-link">Patients</a>
+      <a href="/auth/logout" class="nav-link logout-link">Logout</a>
+    </nav>
+
+  </div>
+</header>
+
+<script>
+  function toggleMenu() {
+    const menu = document.getElementById("doctorMenu");
+    menu.classList.toggle("open");
+  }
+</script>

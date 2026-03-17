@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+<%- include("../partials/navbar_client.ejs") %>
+<div class="dosha-container">
+  <h1>Dosha Tracker</h1>
+
+  <div class="filter-section">
+    <label for="period">Time Period:</label>
+    <select id="period" onchange="changePeriod(this.value)" class="form-input">
+      <option value="7" <%= period === '7' ? 'selected' : '' %>>Last 7 Days</option>
+      <option value="30" <%= period === '30' ? 'selected' : '' %>>Last 30 Days</option>
+      <option value="90" <%= period === '90' ? 'selected' : '' %>>Last 90 Days</option>
+      <option value="365" <%= period === '365' ? 'selected' : '' %>>Last Year</option>
+    </select>
+  </div>
+
+  <div class="current-dosha">
+    <h2>Current Dosha Balance</h2>
+    <div class="dosha-cards">
+      <div class="dosha-card vata">
+        <div class="dosha-name">🌬️ Vata</div>
+        <div class="dosha-percentage"><%= currentDosha.vata || 0 %>%</div>
+        <p class="dosha-description">Air & Ether</p>
+      </div>
+
+      <div class="dosha-card pitta">
+        <div class="dosha-name">🔥 Pitta</div>
+        <div class="dosha-percentage"><%= currentDosha.pitta || 0 %>%</div>
+        <p class="dosha-description">Fire & Water</p>
+      </div>
+
+      <div class="dosha-card kapha">
+        <div class="dosha-name">💧 Kapha</div>
+        <div class="dosha-percentage"><%= currentDosha.kapha || 0 %>%</div>
+        <p class="dosha-description">Earth & Water</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="dosha-recommendations">
+    <h2>Recommendations</h2>
+    <div class="recommendations-grid">
+      <div class="recommendation-card">
+        <h3>Vata Balance</h3>
+        <ul>
+          <li>Warm, grounding foods</li>
+          <li>Regular daily routine</li>
+          <li>Adequate rest</li>
+          <li>Oil massage (Abhyanga)</li>
+        </ul>
+      </div>
+
+      <div class="recommendation-card">
+        <h3>Pitta Balance</h3>
+        <ul>
+          <li>Cooling foods</li>
+          <li>Moderation in exercise</li>
+          <li>Avoid excess heat</li>
+          <li>Meditation & yoga</li>
+        </ul>
+      </div>
+
+      <div class="recommendation-card">
+        <h3>Kapha Balance</h3>
+        <ul>
+          <li>Light, dry foods</li>
+          <li>Regular exercise</li>
+          <li>Warm stimulating massage</li>
+          <li>Mental stimulation</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="dosha-history">
+    <h2>Assessment History</h2>
+    <% if (doshaHistory.length > 0) { %>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Vata</th>
+            <th>Pitta</th>
+            <th>Kapha</th>
+            <th>Dominant Dosha</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% doshaHistory.forEach(record => { %>
+            <tr>
+              <td><%= new Date(record.recordedAt).toLocaleDateString() %></td>
+              <td><%= record.vata %>%</td>
+              <td><%= record.pitta %>%</td>
+              <td><%= record.kapha %>%</td>
+              <td><span class="badge"><%= record.dominantDosha %></span></td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    <% } else { %>
+      <p>No dosha assessments yet. Schedule an appointment with a doctor to get your dosha analysis.</p>
+    <% } %>
+  </div>
+</div>
+<%- include("../partials/footer.ejs") %>
+</body>
+</html>

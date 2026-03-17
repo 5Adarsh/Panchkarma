@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title %> | Panchkarma Clinic</title>
+  <link rel="stylesheet" href="/css/main.css" />
+</head>
+<body>
+  <%- include('../partials/navbar_' + user.role.toLowerCase()) %>
+
+  <div class="container">
+    <%- include('../partials/flash_messages') %>
+    
+    <%- body %>
+  </div>
+
+  <%- include('../partials/footer') %>
+
+  <script src="/js/common.js"></script>
+</body>
+</html>

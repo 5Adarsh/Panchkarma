@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title || "Today's Sessions" %></title>
+  <link rel="stylesheet" href="/css/main.css" />
+</head>
+<body>
+
+  <%- include("../partials/navbar_therapist.ejs") %>
+
+  <div class="page-container">
+    <h1>Today's Sessions</h1>
+
+    <% if (!sessions || sessions.length === 0) { %>
+      <p>No sessions scheduled for today.</p>
+    <% } else { %>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Client</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Therapy</th>
+            <th>Time</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% sessions.forEach(s => { %>
+            <tr>
+              <td><%= s.client.firstName %> <%= s.client.lastName %></td>
+              <td><%= s.client.email %></td>
+              <td><%= s.client.phone %></td>
+              <td><%= s.therapy ? s.therapy.name : "Not Assigned yet" %></td>
+              <td><%= s.startTime %></td>
+              <td>
+                <span class="badge badge-<%= s.status === 'COMPLETED' ? 'success' : 'info' %>">
+                  <%= s.status %>
+                </span>
+              </td>
+              <td>
+                <a href="/therapist/session/<%= s._id %>" class="btn btn-small">View</a>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    <% } %>
+  </div>
+<%- include("../partials/footer.ejs") %>
+
+</body>
+</html>

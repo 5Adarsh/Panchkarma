@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title || "Record Dosha Status" %></title>
+  <link rel="stylesheet" href="/css/main.css" />
+</head>
+<body>
+
+  <%- include("../partials/navbar_doctor.ejs") %>
+
+  <div class="page-container">
+    <h1>Record Dosha Status</h1>
+    <p>Patient: <strong><%= patient.firstName %> <%= patient.lastName %></strong></p>
+
+    <form method="POST" action="/doctor/patient/<%= patient._id %>/dosha" class="dosha-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="vata">Vata (%)</label>
+          <input type="number" id="vata" name="vata" class="form-input" min="0" max="100" required />
+        </div>
+
+        <div class="form-group">
+          <label for="pitta">Pitta (%)</label>
+          <input type="number" id="pitta" name="pitta" class="form-input" min="0" max="100" required />
+        </div>
+
+        <div class="form-group">
+          <label for="kapha">Kapha (%)</label>
+          <input type="number" id="kapha" name="kapha" class="form-input" min="0" max="100" required />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="notes">Notes (optional)</label>
+        <textarea id="notes" name="notes" rows="3" class="form-input" placeholder="Doctor's observations, recommendations, etc."></textarea>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Save Dosha Status</button>
+      <a href="/doctor/patient/<%= patient._id %>" class="btn btn-secondary">Cancel</a>
+    </form>
+  </div>
+<%- include("../partials/footer.ejs") %>
+</body>
+</html>

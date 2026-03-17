@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title || "Patient Details" %></title>
+  <link rel="stylesheet" href="/css/main.css" />
+</head>
+
+<body>
+
+<%- include("../partials/navbar_doctor.ejs") %>
+
+<div class="page-container patient-detail-page">
+
+  <!-- ============================
+       PATIENT HEADER
+  ============================= -->
+  <h1 class="page-title">
+    Patient: <%= patient.firstName %> <%= patient.lastName %>
+  </h1>
+
+  <!-- ============================
+       PATIENT PROFILE
+  ============================= -->
+  <section class="section-block card">
+    <h2 class="section-title">Profile</h2>
+
+    <p><strong>Email:</strong> <%= patient.email %></p>
+    <p><strong>Phone:</strong> <%= patient.phone %></p>
+    <p><strong>Age:</strong> <%= patient.age || '-' %></p>
+    <p><strong>Gender:</strong> <%= patient.gender || '-' %></p>
+  </section>
+
+  <!-- ============================
+       APPOINTMENT HISTORY
+  ============================= -->
+  <section class="section-block card">
+    <h2 class="section-title">Appointments</h2>
+
+    <% if (!appointments || appointments.length === 0) { %>
+
+      <div class="empty-state">
+        <p>No appointments found.</p>
+      </div>
+
+    <% } else { %>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Therapy</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% appointments.forEach(apt => { %>
+            <tr>              
+              <td><%= apt.therapy ? apt.therapy.name : "Not Assigned yet" %></td>
+              <td><%= new Date(apt.appointmentDate).toLocaleDateString() %></td>
+              <td><%= apt.startTime %></td>
+              <td>
+                <span class="badge 
+                  <%= apt.status === 'COMPLETED' ? 'badge-success' : 'badge-info' %>">
+                  <%= apt.status %>
+                </span>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+
+    <% } %>
+  </section>
+
+  <!-- ============================
+       DOSHA HISTORY
+  ============================= -->
+  <section class="section-block card">
+    <h2 class="section-title">Dosha History</h2>
+
+    <div class="action-links">
+      <a href="/doctor/patient/<%= patient._id %>/dosha" class="btn btn-primary">
+        Record New Dosha Status
+      </a>
+    </div>
+
+    <% if (!doshaHistory || doshaHistory.length === 0) { %>
+
+      <div class="empty-state">
+        <p>No dosha records found.</p>
+      </div>
+
+    <% } else { %>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Vata</th>
+            <th>Pitta</th>
+            <th>Kapha</th>
+            <th>Dominant</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% doshaHistory.forEach(d => { %>
+            <tr>
+              <td><%= d.recordedAt ? new Date(d.recordedAt).toLocaleString() : '-' %></td>
+              <td><%= d.vata %>%</td>
+              <td><%= d.pitta %>%</td>
+              <td><%= d.kapha %>%</td>
+              <td><%= d.dominantDosha %></td>
+              <td><%= d.notes || '-' %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+
+    <% } %>
+  </section>
+
+</div>
+
+<%- include("../partials/footer.ejs") %>
+
+</body>
+</html>
